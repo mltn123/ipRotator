@@ -6,7 +6,7 @@ Useful for Web Scraping with R , using PAWS AWS SDK.
 
 
 ?run_all  
-?rotated_get
+?rotated_get  
 ?delete_all_apis
 
 Usage:
