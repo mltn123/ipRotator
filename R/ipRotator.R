@@ -155,6 +155,14 @@ run_all <- function (access_key, secret_access_key, region, url) {
   print(endpoint)
 }
 
+
+#' Rotated GET
+#'
+#' Request URL with rotated_get to request with rotated ips
+#' @param url The URL defined in the setup of the Rest API + site path (if needed)
+#' @examples
+#' rotated_get("https://www.reddit.com/r/all/")
+#' @export
 rotated_get <- function(url) {
   url <- strsplit(url,"://")
   protocol <- url[[1]][1]
@@ -165,5 +173,5 @@ rotated_get <- function(url) {
   return (request)
 }
 
-#a
+
 
