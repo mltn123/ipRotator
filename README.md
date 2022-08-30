@@ -7,6 +7,7 @@ Useful for Web Scraping with R , using PAWS AWS SDK.
 
 ?run_all  
 ?rotated_get
+?delete_all_apis
 
 Usage:
 ```R
@@ -20,6 +21,8 @@ for(i in 1:100) {
   result <- rotated_get("https://www.google.com") 
   text <- content(result, "text")
 }
+# Cleanup (deletes all REST APIS on AWS Account, handle with care)
+delete_all_apis()
 ```
 
 Makes use of the monthly 1 million free API hits.
