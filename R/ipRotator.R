@@ -5,7 +5,7 @@
 #' @param access_key Your AWS Access Key ID
 #' @param secret_access_key Your AWS Secret Access Key ID
 #' @param region "us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "eu-central-1", "ca-central-1"
-#' @examples 
+#' @examples
 #' init_gateway("AKIB8KIA9AO85K8IZ5HJ","nbLRi0qiMSoAGybbV2c86SEl2nhIMPNc5fagV7KQ", "eu-central-1")
 #' @export
 init_gateway <- function(access_key, secret_access_key, region){
@@ -25,9 +25,9 @@ init_gateway <- function(access_key, secret_access_key, region){
 
 #' Create Rest API
 #'
-#' Creates Rest API 
+#' Creates Rest API
 #' @param svc Input your initialized Gateway.
-#' @examples 
+#' @examples
 #' create_rest_api(svc)
 #' @export
 create_rest_api <- function(svc){
@@ -49,11 +49,11 @@ create_rest_api <- function(svc){
 #'
 #' Creates Resource
 #' @param svc Input your initialized Gateway.
-#' @examples 
+#' @examples
 #' create_resource(svc)
 #' @export
 create_resource <- function(svc) {
-  svc$create_resource( 
+  svc$create_resource(
     restApiId=rest_api$id,
     parentId=svc$get_resources(restApiId = rest_api$id)$items[[1]]$id,
     pathPart="{proxy+}"
@@ -66,7 +66,7 @@ create_resource <- function(svc) {
 #' Put Method
 #'
 #' Creates Method
-#' @examples 
+#' @examples
 #' put_method()
 #' @export
 put_method <- function() {
@@ -86,7 +86,7 @@ put_method <- function() {
 #'
 #' Creates Integration
 #' @param url The target URL you want rotating requesting IPs on
-#' @examples 
+#' @examples
 #' put_integration("https://www.google.com")
 #' @export
 put_integration <- function(url) {
@@ -121,10 +121,10 @@ put_integration <- function(url) {
 #' Create Deployement
 #'
 #' Deploys API
-#' @examples 
+#' @examples
 #' create_deployement()
 #' @export
-#' 
+#'
 create_deployement <- function (){
 svc$create_deployment(
   restApiId=rest_api$id,
@@ -139,7 +139,7 @@ svc$create_deployment(
 #' @param secret_access_key Your AWS Secret Access Key ID
 #' @param region "us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "eu-central-1", "ca-central-1"
 #' @param url The target URL you want rotating requesting IPs on
-#' @examples 
+#' @examples
 #' run_all("AKIB8KIA9AO85K8IZ5HJ","nbLRi0qiMSoAGybbV2c86SEl2nhIMPNc5fagV7KQ", "eu-central-1", "https://www.google.com")
 #' @export
 run_all <- function (access_key, secret_access_key, region, url) {
@@ -147,9 +147,23 @@ run_all <- function (access_key, secret_access_key, region, url) {
   rest_api <<- create_rest_api(svc)
   resource_id <<- create_resource(svc)
   put_method()
+  url <- url
   put_integration(url)
   create_deployement()
-  print(str_glue("https://{rest_api$id}.execute-api.{region}.amazonaws.com/ProxyStage"))
+  endpoint <<- str_glue("{rest_api$id}.execute-api.{region}.amazonaws.com")
+  #endpoint <<- str_glue("https://{rest_api$id}.execute-api.{region}.amazonaws.com/ProxyStage")
+  print(endpoint)
 }
+
+rotated_get <- function(url) {
+  url <- strsplit(url,"://")
+  protocol <- url[[1]][1]
+  site <- url[[1]][2]
+  site_path <- str_split_fixed(site,"/",2)[2]
+  request_url <-  str_glue("{protocol}://{endpoint}/ProxyStage/{site_path}")
+  request <- GET(request_url, add_headers("X-My-X-Forwarded-For" = ip_random(1), "Host" = endpoint ))
+  return (request)
+}
+
 
 
