@@ -30,10 +30,10 @@ init_gateway <- function(access_key, secret_access_key, region){
 #' @examples
 #' create_rest_api(svc)
 #' @export
-create_rest_api <- function(svc){
+create_rest_api <- function(svc, url){
   rest_api <- svc$create_rest_api(
     name = "ip_rotatoR",
-    description = "Rotates IP on every request",
+    description = url,
     version = "0.1",
     endpointConfiguration = list(
       types = list(
@@ -142,17 +142,34 @@ svc$create_deployment(
 #' @examples
 #' run_all("AKIB8KIA9AO85K8IZ5HJ","nbLRi0qiMSoAGybbV2c86SEl2nhIMPNc5fagV7KQ", "eu-central-1", "https://www.google.com")
 #' @export
+#'
+#'
 run_all <- function (access_key, secret_access_key, region, url) {
   svc <<- init_gateway(access_key,secret_access_key, region)
-  rest_api <<- create_rest_api(svc)
-  resource_id <<- create_resource(svc)
-  put_method()
-  url <- url
-  put_integration(url)
-  create_deployement()
-  endpoint <<- str_glue("{rest_api$id}.execute-api.{region}.amazonaws.com")
-  #endpoint <<- str_glue("https://{rest_api$id}.execute-api.{region}.amazonaws.com/ProxyStage")
-  print(endpoint)
+  # Checks if REST-API on url already exists, if it does , connects to existing REST-API instead of creating new one
+  exists = FALSE
+  if (length(svc$get_rest_apis()$items) > 0) {
+    for (i in 1:length(svc$get_rest_apis()$items)){
+       if (svc$get_rest_apis()$items[[i]]$description == url){
+         rest_api <<- svc$get_rest_api(svc$get_rest_apis()$items[[i]]$id)
+         endpoint <<- str_glue("{rest_api$id}.execute-api.{region}.amazonaws.com")
+         print(str_glue("REST-API with {url} already exists at {endpoint}"))
+         exists = TRUE
+         break
+       }
+    }
+  }
+    if (exists == FALSE) {
+      rest_api <<- create_rest_api(svc, url)
+      resource_id <<- create_resource(svc)
+      put_method()
+      url <- url
+      put_integration(url)
+      create_deployement()
+      endpoint <<- str_glue("{rest_api$id}.execute-api.{region}.amazonaws.com")
+      print(endpoint)
+    }
+
 }
 
 
@@ -170,6 +187,7 @@ rotated_get <- function(url) {
   site_path <- str_split_fixed(site,"/",2)[2]
   request_url <-  str_glue("{protocol}://{endpoint}/ProxyStage/{site_path}")
   request <- GET(request_url, add_headers("X-My-X-Forwarded-For" = ip_random(1), "Host" = endpoint ))
+  print(request_url)
   return (request)
 }
 
