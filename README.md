@@ -13,3 +13,5 @@ devtools::install_github("mltn123/ipRotator")
 ?run_all  
 
 Makes use of the monthly 1 million free IP adresses AWS offers.
+
+Inspired by / cheated off https://github.com/Ge0rg3/requests-ip-rotator/
