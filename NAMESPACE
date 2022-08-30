@@ -3,6 +3,7 @@
 export(create_deployement)
 export(create_resource)
 export(create_rest_api)
+export(delete_all_apis)
 export(init_gateway)
 export(put_integration)
 export(put_method)

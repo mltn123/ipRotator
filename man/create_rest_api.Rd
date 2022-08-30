@@ -4,7 +4,7 @@
 \alias{create_rest_api}
 \title{Create Rest API}
 \usage{
-create_rest_api(svc)
+create_rest_api(svc, url)
 }
 \arguments{
 \item{svc}{Input your initialized Gateway.}
