@@ -26,3 +26,9 @@ Makes use of the monthly 1 million free IP adresses AWS offers.
 
 Inspired by / cheated off https://github.com/Ge0rg3/requests-ip-rotator/
 
+Basicly works like this
+https://bigb0sss.github.io/posts/redteam-rotate-ip-aws-gateway/
+with some extra tweaks.
+
+Use https://pipedream.com to debug your scraping, helped me a lot
+
