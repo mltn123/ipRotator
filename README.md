@@ -22,7 +22,7 @@ for(i in 1:100) {
 }
 ```
 
-Makes use of the monthly 1 million free IP adresses AWS offers.
+Makes use of the monthly 1 million free API hits.
 
 Inspired by / cheated off https://github.com/Ge0rg3/requests-ip-rotator/
 
