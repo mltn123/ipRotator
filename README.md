@@ -1,6 +1,6 @@
 # ipRotator
 R Package to Rotate IPs using AWS  
-Useful for Webscraping with R , using PAWS AWS SDK. 
+Useful for Web Scraping with R , using PAWS AWS SDK. 
 
 
 
