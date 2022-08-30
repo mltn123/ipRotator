@@ -192,4 +192,17 @@ rotated_get <- function(url) {
 }
 
 
+#' Delete all REST APIS
+#'
+#' Deletes all REST APIS , handle with care
+#' @examples
+#' delete_all_apis()
+#' @export
+delete_all_apis <- function() {
+  for (i in 1:length(svc$get_rest_apis()$items)){
+      svc$delete_rest_api (
+        svc$get_rest_apis()$items[[i]]$id
+      )
+  }
+}
 
