@@ -14,10 +14,10 @@ devtools::install_github("mltn123/ipRotator")
 
 Usage:
 
-Creates REST-API
+Creates REST-API  
 run_all("AKIB8KIA9AO85K8IZ5HJ","nbLRi0qiMSoAGybbV2c86SEl2nhIMPNc5fagV7KQ", "eu-central-1", "https://www.google.com")
 
-Use it like GET in your scraping loops.
+Use it like GET in your scraping loops.  
 rotated_get(https://www.google.com) 
 
 
