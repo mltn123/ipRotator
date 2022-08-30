@@ -9,15 +9,18 @@ Useful for Webscraping with R , using PAWS AWS SDK.
 ?rotated_get
 
 Usage:
-`
+```R
 devtools::install_github("mltn123/ipRotator")
 library(ipRotator)
 #Creates REST-API  
 run_all("AKIB8KIA9AO85K8IZ5HJ","nbLRi0qiMSoAGybbV2c86SEl2nhIMPNc5fagV7KQ", "eu-central-1", "https://www.google.com")
 
 #Use it like GET in your scraping loops.  
-rotated_get("https://www.google.com") 
-`
+for(i in 1:100) {   
+  result <- rotated_get("https://www.google.com") 
+  text <- content(result, "text")
+}
+```
 
 Makes use of the monthly 1 million free IP adresses AWS offers.
 
