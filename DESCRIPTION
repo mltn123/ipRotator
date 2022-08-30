@@ -9,7 +9,7 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Imports:
 	paws,
-	stringr
+	stringr,
 	iptools
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
